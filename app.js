@@ -32,7 +32,7 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/auth", require("./routes/auth"));
 app.use("/refresh", require("./routes/refresh"));
 
-// app.use(verifyJWT);
+app.use(verifyJWT);
 app.use("/users", require("./routes/user"));
 app.use("/", require("./routes/data"));
 
