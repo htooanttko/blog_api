@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const RoleList = require("../config/role_list");
+const bcrypt = require("bcrypt");
 
 const getAllUser = async (req, res) => {
   const result = await User.find();
@@ -53,9 +54,34 @@ const getUser = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  if (!req.body.id)
+    return res.status(400).json({ message: "User ID required" });
+  if (!req.body.password)
+    return res.status(400).json({ message: "New password is required" });
+
+  try {
+    const foundUser = await User.findOne({ _id: req.body.id }).exec();
+    if (!foundUser) return res.status(204).json({ message: "User not Found" });
+
+    const duplicate = await bcrypt.compare(
+      req.body.password,
+      foundUser.password
+    );
+    if (duplicate) return res.sendStatus(409);
+
+    foundUser.password = await bcrypt.hash(req.body.password, 10);
+    const result = await foundUser.save();
+
+    res.json(result);
+  } catch (err) {
+    res.sendStatus(500);
+  }
+};
 module.exports = {
   getAllUser,
   updateUser,
   deleteUser,
   getUser,
+  changePassword,
 };

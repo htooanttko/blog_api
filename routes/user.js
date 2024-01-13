@@ -11,5 +11,6 @@ router
   .delete(verifyRoles(RoleList.admin), userController.deleteUser);
 
 router.get("/:id", userController.getUser);
+router.post("/change-pw", userController.changePassword);
 
 module.exports = router;
