@@ -29,7 +29,7 @@ class BlogRequest extends FormRequest
             'tag_ids' => ['required', 'array'],
             'tag_ids.*' => ['integer', 'exists:tags,id'],
             'is_published' => ['required', 'boolean'],
-            'thumbnail' => ['required', 'image', 'max:255'],
+            'thumbnail' => ['required', 'string', 'max:255'],
         ];
     }
 }

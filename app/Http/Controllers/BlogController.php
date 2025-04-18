@@ -32,7 +32,7 @@ class BlogController extends Controller
     public function store(BlogRequest $request)
     {
         $validated = $request->validated();
-        $userId = auth()->id;
+        $userId = $request->user()->id;
 
         $blogDTO = BlogDTO::formRequest($validated, $userId);
         $blog = $this->blogService->createBlog($blogDTO);

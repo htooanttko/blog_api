@@ -38,6 +38,6 @@ class AuthController extends Controller
     {
         $this->authService->logout($request->user());
 
-        return ResponseHelper::success();
+        return ResponseHelper::success(["message" => "logout!"]);
     }
 }

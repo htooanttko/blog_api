@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\Authenticate;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,11 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'sanctum' => EnsureFrontendRequestsAreStateful::class,
-            'auth' => Authenticate::class,
         ]);
 
         // $middleware->validateCsrfTokens(
-        //     except: ['/api/form']
+        //     except: ['/api/auth/login', '/api/auth/register']
         // );
     })
     ->withExceptions(function (Exceptions $exceptions) {
