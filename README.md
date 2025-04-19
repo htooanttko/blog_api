@@ -1,61 +1,549 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📘 API Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This API uses **Laravel Sanctum** for authentication. Most endpoints require an **Bearer token** to access. Authenticated requests must include the `Authorization` header:
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🔐 Auth Endpoints
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### `POST /api/auth/register`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Registers a new user.
 
-## Learning Laravel
+**Request Body:**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```json
+{
+    "name": "hak",
+    "email": "hak@example.com",
+    "password": "your_password"
+}
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Response:**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```json
+{
+    "status": 201,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "user": {
+            "name": "hak",
+            "email": "hak@example.com",
+            "updated_at": "timestamp",
+            "created_at": "timestamp",
+            "id": 1
+        },
+        "token": "your_generated_token"
+    }
+}
+```
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### `POST /api/auth/login`
 
-### Premium Partners
+Logs in a user.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+**Request Body:**
 
-## Contributing
+```json
+{
+    "email": "hak@example.com",
+    "password": "your_password"
+}
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Response:**
 
-## Code of Conduct
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "user": {
+            "name": "hak",
+            "email": "hak@example.com",
+            "updated_at": "timestamp",
+            "created_at": "timestamp",
+            "id": 1
+        },
+        "token": "your_generated_token"
+    }
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### `POST /api/auth/logout`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### 🔒 Requires Authentication
 
-## License
+Logs out the authenticated user.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": "logout"
+}
+```
+
+---
+
+## 📝 Blog Endpoints
+
+#### 🔒 All routes below require authentication.
+
+### `GET /api/blogs`
+
+Fetch all blog posts.
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": [
+        {
+            "id": 2,
+            "user_id": 1,
+            "category_id": 1,
+            "title": "test name and title",
+            "slug": "test-slug",
+            "content": "content about laravel",
+            "is_published": 1,
+            "created_at": "timestamp",
+            "updated_at": "timestamp",
+            "comments_count": 0,
+            "likes_count": 0,
+            "category": {
+                "id": 1,
+                "name": "PHP",
+                "slug": "php"
+            },
+            "tags": [
+                {
+                    "id": 1,
+                    "name": "Laravel",
+                    "slug": "laravel",
+                    "pivot": {
+                        "blog_id": 2,
+                        "tag_id": 1,
+                        "tagged_by_user_id": 1
+                    }
+                }
+            ],
+            "author": {
+                "id": 1,
+                "name": "hak",
+                "email": "hak@example.com"
+            },
+            "comments": [],
+            "likes": []
+        },
+        ...
+    ]
+}
+```
+
+---
+
+### `GET /api/blogs/{id}`
+
+Fetch a specific blog post by ID.
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "id": 1,
+        "user_id": 1,
+        "category_id": 1,
+        "title": "test name and title",
+        "slug": "test-slug-2",
+        "content": "content about laravel",
+        "is_published": 1,
+        "created_at": "timestamp",
+        "updated_at": "timestamp",
+        "comments_count": 0,
+        "likes_count": 0,
+        "category": {
+            "id": 1,
+            "name": "PHP",
+            "slug": "php"
+        },
+        "tags": [
+            {
+                "id": 1,
+                "name": "Laravel",
+                "slug": "laravel",
+                "pivot": {
+                    "blog_id": 1,
+                    "tag_id": 1,
+                    "tagged_by_user_id": 1
+                }
+            }
+        ],
+        "author": {
+            "id": 1,
+            "name": "hak",
+            "email": "hak@example.com"
+        },
+        "comments": [],
+        "likes": []
+    }
+}
+```
+
+---
+
+### `POST /api/blogs`
+
+Create a new blog post.
+
+**Request Body:**
+
+```json
+{
+    "title": "laravel",
+    "slug": "test-slug",
+    "content": "this is content about laravel",
+    "category_id": 1,
+    "tag_ids": [1],
+    "is_published": true
+}
+```
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "user_id": 1,
+        "title": "laravel",
+        "slug": "test-slug",
+        "content": "this is content about laravel",
+        "category_id": 1,
+        "is_published": true,
+        "updated_at": "timestamp",
+        "created_at": "timestamp",
+        "id": 3,
+        "category": {
+            "id": 1,
+            "name": "PHP",
+            "slug": "php"
+        },
+        "tags": [
+            {
+                "id": 1,
+                "name": "Laravel",
+                "slug": "laravel",
+                "pivot": {
+                    "blog_id": 3,
+                    "tag_id": 1,
+                    "tagged_by_user_id": 1
+                }
+            }
+        ],
+        "author": {
+            "id": 1,
+            "name": "hak",
+            "email": "hak@example.com"
+        }
+    }
+}
+```
+
+---
+
+### `POST /api/blogs/comment`
+
+Add a comment to a blog post.
+
+**Request Body:**
+
+```json
+{
+    "blog_id": 1,
+    "content": "this blog is awesome!!!"
+}
+```
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "user_id": 1,
+        "blog_id": "1",
+        "content": "this blog is awesome!!!",
+        "updated_at": "timestamp",
+        "created_at": "timestamp",
+        "id": 1,
+        "user": {
+            "id": 1,
+            "name": "hak"
+        }
+    }
+}
+```
+
+---
+
+### `POST /api/blogs/like`
+
+Like a blog post.
+
+**Request Body:**
+
+```json
+{
+    "blog_id": 1
+}
+```
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": "liked"
+}
+```
+
+---
+
+## 👤 User Endpoints
+
+#### 🔒 All routes below require authentication.
+
+### `GET /api/users`
+
+Get a list of all users.
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": [
+        {
+            "id": 1,
+            "name": "hak",
+            "email": "hak@example.com",
+            "email_verified_at": null,
+            "created_at": "timestamp",
+            "updated_at": "timestamp",
+            "blogs_count": 2,
+            "comments_count": 0,
+            "likes_count": 0,
+            "blogs": [
+                {
+                    "id": 1,
+                    "user_id": 1,
+                    "category_id": 1,
+                    "title": "test name and title",
+                    "slug": "test-slug-2",
+                    "category": {
+                        "id": 1,
+                        "name": "PHP",
+                        "slug": "php"
+                    },
+                    "tags": [
+                        {
+                            "id": 1,
+                            "name": "Laravel",
+                            "slug": "laravel",
+                            "pivot": {
+                                "blog_id": 1,
+                                "tag_id": 1,
+                                "tagged_by_user_id": 1
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "user_id": 1,
+                    "category_id": 1,
+                    "title": "test name and title",
+                    "slug": "test-slug",
+                    "category": {
+                        "id": 1,
+                        "name": "PHP",
+                        "slug": "php"
+                    },
+                    "tags": [
+                        {
+                            "id": 1,
+                            "name": "Laravel",
+                            "slug": "laravel",
+                            "pivot": {
+                                "blog_id": 2,
+                                "tag_id": 1,
+                                "tagged_by_user_id": 1
+                            }
+                        }
+                    ]
+                }
+            ],
+            "comments": [],
+            "likes": []
+        }
+    ]
+}
+```
+
+---
+
+### `GET /api/users/{id}`
+
+Get details of a specific user by ID.
+
+**Response:**
+
+```json
+{
+    "status": 200,
+    "success": true,
+    "message": "Success",
+    "data": {
+        "id": 1,
+        "name": "hak",
+        "email": "hak@example.com",
+        "email_verified_at": null,
+        "created_at": "timestamp",
+        "updated_at": "timestamp",
+        "blogs_count": 3,
+        "comments_count": 1,
+        "likes_count": 1,
+        "blogs": [
+            {
+                "id": 1,
+                "user_id": 1,
+                "category_id": 1,
+                "title": "test name and title",
+                "slug": "test-slug-2",
+                "category": {
+                    "id": 1,
+                    "name": "PHP",
+                    "slug": "php"
+                },
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Laravel",
+                        "slug": "laravel",
+                        "pivot": {
+                            "blog_id": 1,
+                            "tag_id": 1,
+                            "tagged_by_user_id": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "user_id": 1,
+                "category_id": 1,
+                "title": "test name and title",
+                "slug": "test-slug",
+                "category": {
+                    "id": 1,
+                    "name": "PHP",
+                    "slug": "php"
+                },
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Laravel",
+                        "slug": "laravel",
+                        "pivot": {
+                            "blog_id": 2,
+                            "tag_id": 1,
+                            "tagged_by_user_id": 1
+                        }
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "user_id": 1,
+                "category_id": 1,
+                "title": "test laravel",
+                "slug": "test-slug_again-and",
+                "category": {
+                    "id": 1,
+                    "name": "PHP",
+                    "slug": "php"
+                },
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "Laravel",
+                        "slug": "laravel",
+                        "pivot": {
+                            "blog_id": 3,
+                            "tag_id": 1,
+                            "tagged_by_user_id": 1
+                        }
+                    }
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "id": 1,
+                "blog_id": 1,
+                "user_id": 1,
+                "content": "this blog is awesome!!!",
+                "created_at": "timestamp",
+                "updated_at": "timestamp",
+                "blog": {
+                    "id": 1,
+                    "title": "test name and title",
+                    "slug": "test-slug-2"
+                }
+            }
+        ],
+        "likes": [
+            {
+                "id": 1,
+                "user_id": 1,
+                "blog_id": 1,
+                "created_at": "timestamp",
+                "updated_at": "timestamp",
+                "blog": {
+                    "id": 1,
+                    "title": "test name and title",
+                    "slug": "test-slug-2"
+                }
+            }
+        ]
+    }
+}
+```
+
+---
