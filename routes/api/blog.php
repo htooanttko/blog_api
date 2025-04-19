@@ -9,6 +9,8 @@ Route::prefix('/')->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'show');
             Route::post('/', 'store');
+            Route::post('/comment', 'comment');
+            Route::post('/like', 'like');
         });
     });
 });

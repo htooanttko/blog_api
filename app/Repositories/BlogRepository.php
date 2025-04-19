@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Blog;
+use App\Models\Comment;
+use App\Models\Like;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 
 class BlogRepository implements BlogRepositoryInterface
@@ -13,9 +15,10 @@ class BlogRepository implements BlogRepositoryInterface
             'category:id,name,slug',
             'tags:id,name,slug',
             'author:id,name,email',
-            'comments.user:id,name'
+            'comments.user:id,name',
+            'likes.user:id,name'
         ])
-            ->withCount('comments')
+            ->withCount(['comments', 'likes'])
             ->latest()
             ->get();
     }
@@ -26,9 +29,10 @@ class BlogRepository implements BlogRepositoryInterface
             'category:id,name,slug',
             'tags:id,name,slug',
             'author:id,name,email',
-            'comments.user:id,name'
+            'comments.user:id,name',
+            'likes.user:id,name'
         ])
-            ->withCount('comments')
+            ->withCount(['comments', 'likes'])
             ->findOrFail($id);
     }
 
@@ -48,5 +52,31 @@ class BlogRepository implements BlogRepositoryInterface
             'tags:id,name,slug',
             'author:id,name,email',
         ]);
+    }
+
+    public function commentBlog(array $data): Comment
+    {
+        $comment = Comment::create($data);
+
+        return $comment->load('user:id,name');
+    }
+
+    public function likeBlog(int $blogId, int $userId): string
+    {
+        $like = Like::where('blog_id', $blogId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($like) {
+            $like->delete();
+            return 'unliked';
+        }
+
+        Like::create([
+            'blog_id' => $blogId,
+            'user_id' => $userId
+        ]);
+
+        return 'liked';
     }
 }

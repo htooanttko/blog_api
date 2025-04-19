@@ -14,6 +14,11 @@ class BlogTag extends Pivot
         'tagged_by_user_id',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function taggedBy()
     {
         return $this->belongsTo(User::class, 'tagged_by_user_id');

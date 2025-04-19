@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'title',
+        'slug',
+        'content',
+        'thumbnail',
+        'is_published'
+    ];
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -18,7 +28,7 @@ class Blog extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class)
+        return $this->belongsToMany(Tag::class, 'blog_tags')
             ->using(BlogTag::class)
             ->withPivot('tagged_by_user_id')
             ->withTimestamps();

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\DTOs\BlogDTO;
+use App\DTOs\CommentDTO;
+use App\DTOs\LikeDTO;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
 
 class BlogService
@@ -27,5 +29,15 @@ class BlogService
     public function createBlog(BlogDTO $blogDTO)
     {
         return $this->blogRepository->create($blogDTO->toArray());
+    }
+
+    public function createCommentBlog(CommentDTO $commentDTO)
+    {
+        return $this->blogRepository->commentBlog($commentDTO->toArray());
+    }
+
+    public function toggleLikeBlog(LikeDTO $likeDTO)
+    {
+        return $this->blogRepository->likeBlog($likeDTO->blogId, $likeDTO->userId);
     }
 }
