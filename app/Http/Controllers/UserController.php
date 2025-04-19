@@ -17,13 +17,13 @@ class UserController extends Controller
 
     public function index()
     {
-        $blogs = $this->userService->getUsers();
-        return ResponseHelper::success($blogs);
+        $users = $this->userService->getUsers();
+        return ResponseHelper::success($users);
     }
 
     public function show($id)
     {
-        $blog = $this->userService->getUserById($id);
-        return $blog ? ResponseHelper::success($blog) : ResponseHelper::error('User not found', 404);
+        $user = $this->userService->getUserById($id);
+        return $user ? ResponseHelper::success($user) : ResponseHelper::error('User not found', 404);
     }
 }
