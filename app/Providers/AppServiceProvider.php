@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Repositories\AuthRepository;
 use App\Repositories\BlogRepository;
+use App\Repositories\UserRepository;
 use App\Repositories\Interfaces\AuthRepositoryInterface;
 use App\Repositories\Interfaces\BlogRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         $bindings = [
             BlogRepositoryInterface::class => BlogRepository::class,
             AuthRepositoryInterface::class => AuthRepository::class,
+            UserRepositoryInterface::class => UserRepository::class,
         ];
 
         foreach ($bindings as $interface => $repository) {

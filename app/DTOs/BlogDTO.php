@@ -12,7 +12,7 @@ class BlogDTO
         public int $categoryId,
         public array $tagIds,
         public bool $isPublished,
-        public string $thumbnail
+        // public string $thumbnail
     ) {}
 
     public static function formRequest(array $data, int $userId): self
@@ -25,7 +25,7 @@ class BlogDTO
             $data['category_id'],
             $data['tag_ids'],
             $data['is_published'],
-            $data['thumbnail'],
+            // $data['thumbnail'],
         );
     }
 
@@ -39,7 +39,7 @@ class BlogDTO
             'category_id' => $this->categoryId,
             'tag_ids' => $this->tagIds,
             'is_published' => $this->isPublished,
-            'thumbnail' => $this->thumbnail,
+            // 'thumbnail' => $this->thumbnail,
         ];
     }
 }

@@ -12,7 +12,7 @@ class Blog extends Model
         'title',
         'slug',
         'content',
-        'thumbnail',
+        // 'thumbnail',
         'is_published'
     ];
 
